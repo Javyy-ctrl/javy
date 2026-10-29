@@ -6,14 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>agile-deob</AssemblyName>
-    <RootNamespace>AgileDeob</RootNamespace>
+    <RootNamespace>AgileDeob.Cli</RootNamespace>
     <LangVersion>latest</LangVersion>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- dnlib: the metadata/IL library behind de4dot and dnSpy. -->
-    <PackageReference Include="dnlib" Version="4.4.0" />
+    <ProjectReference Include="..\AgileDeob.Core\AgileDeob.Core.csproj" />
   </ItemGroup>
 
 </Project>

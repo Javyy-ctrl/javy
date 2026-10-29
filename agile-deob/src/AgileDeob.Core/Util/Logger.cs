@@ -9,12 +9,18 @@ public enum LogLevel
 }
 
 /// <summary>
-/// Dead-simple leveled console logger. No dependencies on purpose so the tool
-/// stays easy to read for people picking apart CTF binaries.
+/// Dead-simple leveled logger. Writes to the console by default, but a UI can
+/// supply <see cref="Sink"/> to capture lines (e.g. into a text box). No
+/// dependencies on purpose so the tool stays easy to read.
 /// </summary>
 public sealed class Logger
 {
     public LogLevel Level { get; set; } = LogLevel.Info;
+
+    /// <summary>
+    /// If set, formatted lines go here instead of the console (colors dropped).
+    /// </summary>
+    public Action<LogLevel, string>? Sink { get; set; }
 
     public Logger(LogLevel level = LogLevel.Info) => Level = level;
 
@@ -29,11 +35,19 @@ public sealed class Logger
         if (level > Level)
             return;
 
+        string line = $"[{tag}] {msg}";
+
+        if (Sink is not null)
+        {
+            Sink(level, line);
+            return;
+        }
+
         ConsoleColor prev = Console.ForegroundColor;
         try
         {
             Console.ForegroundColor = color;
-            Console.WriteLine($"[{tag}] {msg}");
+            Console.WriteLine(line);
         }
         finally
         {
